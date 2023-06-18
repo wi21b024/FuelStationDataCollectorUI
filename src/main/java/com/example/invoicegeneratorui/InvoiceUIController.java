@@ -31,7 +31,32 @@ public class InvoiceUIController {
         }
     }
 
-    @FXML
+    public void btnInfo_Clicked(ActionEvent actionEvent) {
+        try {
+
+
+            var request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8080/invoices/" + customerID.getText()))
+                    .GET().build();
+            var response = HttpClient.newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                info.setText("PDF gefunden. Pfad: " + response.body());
+            } else if (response.statusCode() == 404) {
+                info.setText("PDF nicht gefunden");
+            } else {
+                info.setText("Fehler beim Aufrufen der REST-API. Statuscode: " + response.statusCode());
+            }
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("Fehler beim Aufrufen der REST-API: \n" + e.toString());
+            alert.showAndWait();
+        }
+    }
+
+
+    /*@FXML
     public void btnInfo_Clicked(ActionEvent actionEvent) {
         try {
             var request = HttpRequest.newBuilder()
@@ -45,7 +70,7 @@ public class InvoiceUIController {
             alert.setContentText("Failed to call REST api: \n" + e.toString());
             alert.showAndWait();
         }
-    }
+    }*/
 
     public void btnExit_Clicked(ActionEvent actionEvent) {
         System.exit(0);
