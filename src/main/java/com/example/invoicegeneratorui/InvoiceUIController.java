@@ -9,10 +9,13 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+//import javafx.scene.web.WebEngine;
 
 public class InvoiceUIController {
     @FXML
     public TextField info;
+   // @FXML
+    //protected WebView webviewBrowser;
     @FXML
     public TextField customerID;
 
@@ -42,9 +45,9 @@ public class InvoiceUIController {
                     .send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
-                info.setText("PDF gefunden. Pfad: " + response.body());
+                info.setText(response.body());
             } else if (response.statusCode() == 404) {
-                info.setText("PDF nicht gefunden");
+                info.setText("404 PDF nicht gefunden");
             } else {
                 info.setText("Fehler beim Aufrufen der REST-API. Statuscode: " + response.statusCode());
             }
